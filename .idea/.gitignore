@@ -1,0 +1,15 @@
+# Default ignored files
+/inspectionProfiles/
+/libraries/
+/shelf/
+/sonarlint/
+.name
+compiler.xml
+encodings.xml
+jarRepositories.xml
+misc.xml
+modules.xml
+sonarlint*
+uiDesigner.xml
+vcs.xml
+workspace.xml
