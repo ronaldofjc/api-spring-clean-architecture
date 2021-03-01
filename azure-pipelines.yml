@@ -1,63 +1,58 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
-- devops
+    - devops
 
 pool:
-  vmImage: ubuntu-latest
+    vmImage: ubuntu-latest
 
 steps:
-- task: Maven@3
-  enabled: true
-  displayName: '[BUILD] Compile and Build'
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package -DskipTests'
+    -   task: Maven@3
+        enabled: true
+        displayName: '[BUILD] Compile and Build'
+        inputs:
+            mavenPomFile: 'pom.xml'
+            mavenOptions: '-Xmx3072m'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '1.8'
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            goals: 'package -DskipTests'
 
-- task: Maven@3
-  enabled: true
-  displayName: '[TEST] Executing Tests'
-  inputs:
-      mavenPomFile: 'pom.xml'
-      goals: 'test'
-      publishJUnitResults: false
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
-      mavenVersionOption: 'Default'
-      mavenOptions: '-Xmx3072m'
-      mavenAuthenticateFeed: false
-      effectivePomSkip: false
-      sonarQubeRunAnalysis: false
+    -   task: Maven@3
+        enabled: true
+        displayName: '[TEST] Executing Tests'
+        inputs:
+            mavenPomFile: 'pom.xml'
+            goals: 'test'
+            publishJUnitResults: false
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '1.11'
+            mavenVersionOption: 'Default'
+            mavenOptions: '-Xmx3072m'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: false
 
-- task: SonarCloudPrepare@1
-  enabled: true
-  displayName: '[SONAR] Prepare Analysis Configuration'
-  inputs:
-    SonarCloud: 'sonar-cloud-free'
-    organization: 'estudos-ronaldo-dev-sec-ops'
-    scannerMode: 'Other'
-    extraProperties: |
-      # Additional properties that will be passed to the scanner,
-      # Put one key=value per line, example:
-      # sonar.exclusions=**/*.bin
-      sonar.projectKey=estudos-ronaldo_devsecops
-      sonar.projectName=devsecops
+    -   task: SonarCloudPrepare@1
+        enabled: true
+        displayName: '[SONAR] Prepare Analysis Configuration'
+        inputs:
+            SonarCloud: 'sonar-cloud-free'
+            organization: 'estudos-ronaldo-dev-sec-ops'
+            scannerMode: 'Other'
+            extraProperties: |
+                # Additional properties that will be passed to the scanner,
+                # Put one key=value per line, example:
+                # sonar.exclusions=**/*.bin
+                sonar.projectKey=estudos-ronaldo_devsecops
+                sonar.projectName=devsecops
 
-- task: SonarCloudAnalyze@1
-  enabled: true
-  displayName: '[SONAR] Execute Code Analysis'
+    -   task: SonarCloudAnalyze@1
+        enabled: true
+        displayName: '[SONAR] Execute Code Analysis'
 
-- task: SonarCloudPublish@1
-  enabled: true
-  displayName: '[SONAR] Publish Quality Gate Result'
-  inputs:
-    pollingTimeoutSec: '300'
+    -   task: SonarCloudPublish@1
+        enabled: true
+        displayName: '[SONAR] Publish Quality Gate Result'
+        inputs:
+            pollingTimeoutSec: '300'
