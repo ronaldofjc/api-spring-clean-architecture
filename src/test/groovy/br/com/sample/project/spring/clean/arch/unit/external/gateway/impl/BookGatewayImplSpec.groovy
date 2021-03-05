@@ -28,6 +28,28 @@ class BookGatewayImplSpec extends Specification {
         book = Fixture.from(Book).gimme(BookTemplate.VALID_BOOK)
     }
 
+    def "Should execute gateway find by id with success"() {
+        when: "Execute"
+        Optional<BookModel> result = bookGateway.findById(1)
+
+        then: "Result is correct"
+        result.isPresent()
+
+        and: "Repository must be called"
+        1 * bookRepository.findById(_ as Long) >> Optional.of(bookModel)
+    }
+
+    def "Should return GatewayException when execute gateway find by id"() {
+        given: "Repository must be called"
+        1 * bookRepository.findById(_ as Long) >> { throw new GatewayException() }
+
+        when: "Execute"
+        Optional<BookModel> result = bookGateway.findById(1)
+
+        then: "Result is correct"
+        thrown(GatewayException)
+    }
+
     @Unroll
     def "should execute create new book when #scenario"() {
         given: "An empty Exception"
