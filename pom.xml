@@ -117,7 +117,6 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        *.autogerado.*,
                         **/*.xml,
                         **/exception/**,
                         **/domain/**,
@@ -141,9 +140,6 @@
                         </reports>
                     </reportSet>
                 </reportSets>
-                <configuration>
-                    <excludes>**/autogerado/**</excludes>
-                </configuration>
             </plugin>
         </plugins>
     </reporting>
