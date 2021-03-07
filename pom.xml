@@ -15,6 +15,7 @@
     <description>Sample project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
+        <jacoco.version>0.8.2</jacoco.version>
     </properties>
     <dependencies>
         <dependency>
@@ -102,7 +103,45 @@
                     </includes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>jacoco-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        **/*.xml,
+                        **/exception/**,
+                        **/domain/**,
+                        **/endpoint/entity/**,
+                        **/external/database/repository/model/**
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>
