@@ -12,12 +12,25 @@ import static br.com.sample.project.spring.clean.arch.external.database.reposito
 class BookTemplate implements TemplateLoader {
 
     public static final String VALID_BOOK = "Valid book"
+    public static final String VALID_BOOK_WITH_ID = "Valid book with id"
 
     @Override
     void load() {
         Fixture.of(Book).addTemplate(VALID_BOOK, new Rule() {
             {
                 add(title, "title test")
+                add(author, "author test")
+                add(pages, 100)
+                add(active, true)
+                add(creationTime, ZonedDateTime.now())
+                add(updateTime, ZonedDateTime.now())
+            }
+        })
+
+        Fixture.of(Book).addTemplate(VALID_BOOK_WITH_ID, new Rule() {
+            {
+                add(id, 1L)
+                add(title, "title test2")
                 add(author, "author test")
                 add(pages, 100)
                 add(active, true)
