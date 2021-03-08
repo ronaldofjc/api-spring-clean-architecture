@@ -29,14 +29,15 @@ class BookGatewayImplSpec extends Specification {
     }
 
     def "Should execute gateway find by id with success"() {
+        given: "Repository must be called"
+        1 * bookRepository.findById(_ as Long) >> Optional.of(bookModel)
+
         when: "Execute"
-        Optional<BookModel> result = bookGateway.findById(1)
+        Optional<Book> result = bookGateway.findById(1)
 
         then: "Result is correct"
         result.isPresent()
-
-        and: "Repository must be called"
-        1 * bookRepository.findById(_ as Long) >> Optional.of(bookModel)
+        result.get().title == "title test"
     }
 
     def "Should return GatewayException when execute gateway find by id"() {
@@ -44,7 +45,7 @@ class BookGatewayImplSpec extends Specification {
         1 * bookRepository.findById(_ as Long) >> { throw new GatewayException() }
 
         when: "Execute"
-        Optional<BookModel> result = bookGateway.findById(1)
+        bookGateway.findById(1)
 
         then: "Result is correct"
         thrown(GatewayException)
